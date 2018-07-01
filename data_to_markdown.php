@@ -61,17 +61,25 @@ foreach ($data as $key => $distro) {
                 $page->writeVersionTable($arch, $data, $distro['flavours']);
             }
         } else {
-            $page->writeLinksList($distro['iso']);
+            foreach ($distro['arch'] as $arch) {
+                if (!empty($distro['iso'][$arch])) {
+                    $page->writeLinksList("iso.$arch", $distro['iso'][$arch]);
+                }
+            }
         }
     }
 
     if (!empty($distro['stage3'])) {
         if (!empty($distro['profiles'])) {
-            foreach ($distro['stage3'] as $arch => $data) {
+            foreach ($distro['arch'] as $arch => $data) {
                 $page->writeVersionTable($arch, $data, $distro['profiles']);
             }
         } else {
-            $page->writeLinksList($distro['stage3']);
+            foreach ($distro['arch'] as $arch) {
+                if (!empty($distro['stage3'][$arch])) {
+                    $page->writeLinksList("stage3.$arch", $distro['stage3'][$arch]);
+                }
+            }
         }
     }
 
@@ -127,12 +135,15 @@ class Markdown
         }
     }
 
-    public function writeLinksList(array $list) {
+    public function writeLinksList(string $name, array $list) {
+        $this->_page .= "$name = [\n";
+        $t = "";
         foreach ($list as $key => $value) {
-            $this->_page .= "- [$key]($value)\n";
+            $t .= ",[$key]($value)\n";
         }
+        $this->_page .= substr($t, 1);
 
-        $this->_page .= "\n\n";
+        $this->_page .= "]\n\n";
     }
 
     public function writeStringList(array $list) {
