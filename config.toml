@@ -1,0 +1,44 @@
+baseURL = "https://unixdistro.org"
+languageCode = "en-us"
+title = "unix distro overview"
+theme = "after-dark"
+enableRobotsTXT = true
+
+[permalinks]
+blog  = "blog/:slug/"
+
+[params]
+author = "Danilo Spinella"
+description = "linux and bsd distributions informations"
+dateformat = "Monday, Jan 2, 2006"
+dateformfull = "Mon Jan 2 2006 15:04:05 MST"
+
+[[menu.main]]
+    name = "home"
+    weight = "10"
+    url = "/"
+[[menu.main]]
+    name= "about"
+    weight = 100
+    url = "/about/"
+# [[menu.main]]
+#     name= "blog"
+#     weight = 100
+#     url = "/blog"
+[[menu.main]]
+    name = "distro"
+    weight = 100
+    url = "/distro/"
+[[menu.main]]
+    name = "search"
+    weight = 200
+    url = "/search/"
+# [[menu.main]]
+#     name= "contribute"
+#     weight = 300
+#     url = "https://github.com/DanySpin97/unixdistro-data"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS", "JSON"]
+

@@ -1,0 +1,40 @@
+{{ define "header" }}
+  {{ partial "menu.html" . }}
+{{ end }}
+{{ define "main" }}
+  <script>
+    function loadFile(filePath) {
+      var result = null;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", filePath, false);
+      xmlhttp.send();
+      if (xmlhttp.status==200) {
+        result = xmlhttp.responseText;
+      }
+      return result;
+    }
+  </script>
+  <article itemscope itemtype="http://schema.org/Product">
+    {{ template "_internal/schema.html" . }}
+    <header>
+      <h1 itemprop="headline">{{ .Title }}</h1>
+      <p class="muted">
+        <!-- {{ partial "post/meta.html" . }} -->
+      </p>
+      <!-- {{ if .Description }} -->
+      <!--   <1!-- <blockquote itemprop="description">{{ .Description }}</blockquote> --1> -->
+      <!-- {{ end }} -->
+    </header>
+    <!-- {{ partial "toc-maybe.html" . }} -->
+    <div itemprop="articleBody">
+      {{ .Content }}
+    </div>
+    <footer>
+      </br>
+      {{ partial "post/related-content.html" . }}
+    </footer>
+  </article>
+{{ end }}
+{{ define "footer" }}
+  {{ partial "powered-by.html" . }}
+{{ end }}
