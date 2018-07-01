@@ -1,24 +1,25 @@
-baseURL = "https://unixdistro.org"
+baseURL = "https://liveunix.org"
 languageCode = "en-us"
-title = "unix distro overview"
+title = "liveunix"
 theme = "after-dark"
 enableRobotsTXT = true
 
 [permalinks]
 blog  = "blog/:slug/"
+data  = "data/:slug/"
 
 [params]
 author = "Danilo Spinella"
-description = "linux and bsd distributions informations"
+description = "linux and bsd live iso informations"
 dateformat = "Monday, Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
 
 [[menu.main]]
-    name = "home"
+    name = "cd"
     weight = "10"
     url = "/"
 [[menu.main]]
-    name= "about"
+    name= "whoami"
     weight = 100
     url = "/about/"
 # [[menu.main]]
@@ -26,17 +27,17 @@ dateformfull = "Mon Jan 2 2006 15:04:05 MST"
 #     weight = 100
 #     url = "/blog"
 [[menu.main]]
-    name = "distro"
+    name = "ls"
     weight = 100
-    url = "/distro/"
+    url = "/data/"
 [[menu.main]]
-    name = "search"
+    name = "grep"
     weight = 200
     url = "/search/"
-# [[menu.main]]
-#     name= "contribute"
-#     weight = 300
-#     url = "https://github.com/DanySpin97/unixdistro-data"
+[[menu.main]]
+    name= "contribute"
+    weight = 300
+    url = "https://github.com/liveunix/liveunix-data"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]

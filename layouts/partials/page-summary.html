@@ -10,18 +10,18 @@
   {{ if .Description }}
     <blockquote itemprop="headline">{{ .Description }}</blockquote>
   {{ end }}
-  {{ if ne .Type "distro" }}
+  {{ if ne .Type "data" }}
     <div itemprop="description">
       {{ .Summary }}
     </div>
     {{ if .Truncated }}
-      <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">read more&nbsp;&raquo;</a></nav>
+      <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">cat&nbsp;&raquo;</a></nav>
     {{ end }}
     <meta itemprop="inLanguage" content="{{ .Site.LanguageCode }}">
     <meta itemprop="datePublished" content="{{ dateFormat "2006-01-02T15:04:05-07:00" (default .Date (.PublishDate)) }}">
     <meta itemprop="dateModified" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">
   {{ else }}
-      <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">| less</a></nav>
+      <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">cat</a></nav>
   {{ end }}
   {{ with .Params.images }}
     <meta itemprop="image" content="{{ index . 0 }}">

@@ -1,12 +1,16 @@
-# unixdistro
+---
+type: about
+---
 
-unixdistro is a site that collects informations about linux and bsd distributions. It
-is primary built to get data about livecds iso and stage3 tarball, such as avalaible
-versions and download links.
-it is currently in alpha stage.
+# liveunix
 
-made easy to contribute to, it is composed by 3 components:
+liveunix is a site that collects informations about linux and bsd distributions.
+It is primary built to get data about livecds iso and stage3 tarball, such as
+avalaible versions and download links. it is currently in alpha stage.
 
-- distributions data
-- site for browsing data
-- api to get data (wip)
+it is composed by 4 components:
+
+- distributions and bsd informations
+- site for browsing content
+- api to get formatted data (wip)
+- live multiboot usb (forked from [glim](github.com(thias/glim))) (wip)

@@ -10,32 +10,32 @@ function delTree($dir) {
     return rmdir($dir);
 }
 
-if (is_dir('content/distro')) {
-    delTree('content/distro');
+if (is_dir('content/data')) {
+    delTree('content/data');
 }
-mkdir('content/distro');
+mkdir('content/data');
 
 if (is_dir('static/ascii')) {
     delTree('static/ascii');
 }
 mkdir('static/ascii');
 
-$data_dir = new DirectoryIterator('distro');
+$data_dir = new DirectoryIterator('unixdata');
 foreach ($data_dir as $fileinfo) {
     if (!$fileinfo->isDir() || $fileinfo->getFilename() == '..') {
         continue;
     }
-    $distro_dir = new DirectoryIterator("distro/" . $fileinfo->getFilename());
+    $distro_dir = new DirectoryIterator("unixdata/" . $fileinfo->getFilename());
     foreach ($distro_dir as $distro_info) {
         if (!$distro_info->isFile()) {
             continue;
         } elseif ($distro_info->getFilename() === 'ascii') {
-            file_put_contents("static/ascii/" . $fileinfo->getFilename(), file_get_contents("distro/" . $fileinfo->getFilename() . "/ascii"));
+            file_put_contents("static/ascii/" . $fileinfo->getFilename(), file_get_contents("unixdata/" . $fileinfo->getFilename() . "/ascii"));
             continue;
         } elseif (substr($distro_info->getFilename(), -4) != 'yaml') {
             continue;
         }
-        $filename = "distro/" . $fileinfo->getFilename()
+        $filename = "unixdata/" . $fileinfo->getFilename()
                 . "/" . $distro_info->getFilename();
         $distro_name = substr($distro_info->getFilename(), 0, -5);
         $data[$distro_name] = yaml_parse_file($filename);
@@ -48,27 +48,34 @@ foreach ($data as $key => $distro) {
     $page->writeAsciiFromFile($key);
     $page->writeLine($distro['homepage']);
     $page->writeLine($distro['description']);
-    $arch_list = "";
-    foreach ($distro['iso'] as $arch => $data) {
-        $arch_list .= ",$arch";
-    }
-    $page->writeLine(substr($arch_list, 1));
 
-    $release_model = "";
-    foreach ($distro["release_model"] as $release) {
-        $release_model .= ",$release release";
-    }
-    $page->writeLine(substr($release_model, 1));
-
+    $page->writeStringList($distro['arch']);
+    $page->writeStringList($distro['release_model']);
     if (!empty($distro['flavours'])) {
-        foreach ($distro['iso'] as $arch => $data) {
-            $page->writeVersionTable($arch, $data, $distro['flavours']);
-        }
-    } else {
-        $page->writeLinksList($distro['iso']);
+        $page->writeStringList($distro['flavours']);
     }
 
-    $output_filename = "content/distro/" . $key;
+    if (!empty($distro['iso'])) {
+        if (!empty($distro['flavours'])) {
+            foreach ($distro['iso'] as $arch => $data) {
+                $page->writeVersionTable($arch, $data, $distro['flavours']);
+            }
+        } else {
+            $page->writeLinksList($distro['iso']);
+        }
+    }
+
+    if (!empty($distro['stage3'])) {
+        if (!empty($distro['profiles'])) {
+            foreach ($distro['stage3'] as $arch => $data) {
+                $page->writeVersionTable($arch, $data, $distro['profiles']);
+            }
+        } else {
+            $page->writeLinksList($distro['stage3']);
+        }
+    }
+
+    $output_filename = "content/data/" . $key;
     $output_filename .= '.md';
     $page->writeToFile($output_filename);
 
@@ -80,7 +87,7 @@ class Markdown
     private $_page;
 
     public function __construct(string $title, string $description) {
-        $this->_page .= "---\ntitle: $title \ndescription: $description\ntype: \"distro\"\n---\n\n";
+        $this->_page .= "---\ntitle: $title \ndescription: $description\ntype: \"data\"\n---\n\n";
     }
 
     public function writeLine(string $line) {
@@ -126,6 +133,14 @@ class Markdown
         }
 
         $this->_page .= "\n\n";
+    }
+
+    public function writeStringList(array $list) {
+        $line = "";
+        foreach ($list as $element) {
+            $line .= ", $element";
+        }
+        $this->writeLine(substr($line, 1));
     }
 }
 

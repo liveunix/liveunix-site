@@ -1,3 +1,6 @@
 [submodule "themes/after-dark"]
 	path = themes/after-dark
 	url = https://github.com/comfusion/after-dark
+[submodule "unixdata"]
+	path = unixdata
+	url = git@github.com:liveunix/liveunix-data.git
