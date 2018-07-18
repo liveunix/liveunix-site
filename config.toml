@@ -15,19 +15,19 @@ dateformat = "Monday, Jan 2, 2006"
 dateformfull = "Mon Jan 2 2006 15:04:05 MST"
 
 [[menu.main]]
-    name = "cd"
+    name = "home"
     weight = "10"
     url = "/"
-[[menu.main]]
-    name= "whoami"
-    weight = 100
-    url = "/about/"
+# [[menu.main]]
+#     name= "whoami"
+#     weight = 100
+    # url = "/about/"
 # [[menu.main]]
 #     name= "blog"
 #     weight = 100
 #     url = "/blog"
 [[menu.main]]
-    name = "ls"
+    name = "list"
     weight = 100
     url = "/data/"
 [[menu.main]]
@@ -35,7 +35,7 @@ dateformfull = "Mon Jan 2 2006 15:04:05 MST"
     weight = 200
     url = "/search/"
 [[menu.main]]
-    name= "contribute"
+    name= "git"
     weight = 300
     url = "https://github.com/liveunix/liveunix-data"
 
@@ -43,3 +43,6 @@ dateformfull = "Mon Jan 2 2006 15:04:05 MST"
   home = ["HTML", "RSS", "JSON"]
   section = ["HTML", "RSS", "JSON"]
 
+[blackfriday]
+  hrefTargetBlank = true
+  fractions = false
