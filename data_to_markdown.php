@@ -32,27 +32,96 @@ foreach ($data_dir as $fileinfo) {
         } elseif ($distro_info->getFilename() === 'ascii') {
             file_put_contents("static/ascii/" . $fileinfo->getFilename(), file_get_contents("unixdata/" . $fileinfo->getFilename() . "/ascii"));
             continue;
-        } elseif (substr($distro_info->getFilename(), -4) != 'yaml') {
+        } elseif (substr($distro_info->getFilename(), -4) != 'yaml' || substr($distro_info->getFilename(), 0, 6) == 'sample') {
             continue;
         }
         $filename = "unixdata/" . $fileinfo->getFilename()
                 . "/" . $distro_info->getFilename();
         $distro_name = substr($distro_info->getFilename(), 0, -5);
-        $data[$distro_name] = yaml_parse_file($filename);
-
+        $file = file_get_contents($filename);
+        $file = strtolower($file);
+        $data[$distro_name] = yaml_parse($file);
     }
 }
 
 foreach ($data as $key => $distro) {
-    $page = new Markdown($distro['name'], $distro['description']);
+    $page = new Markdown($distro['name'], $distro['summary']);
     $page->writeAsciiFromFile($key);
-    $page->writeLine($distro['homepage']);
-    $page->writeLine($distro['description']);
+    $page->writeLine("home < " . $distro['homepage'] . " >");
+    $page->writeLine("summary < ". $distro['summary'] . " >");
 
-    $page->writeStringList($distro['arch']);
-    $page->writeStringList($distro['release_model']);
+    if (!empty($distro['description'])) {
+        $page->writeLine("description < " . $distro['description'] .  " >");
+    }
+
+    $page->writeLine("degree of difficulty < " . $distro['difficulty'] .  " >");
+
+    if (!empty($distro['docs'])) {
+        $page->writeLine("documentation < " . $distro['docs'] .  " >");
+    }
+
+    if (!empty($distro['wiki'])) {
+        $page->writeLine("wiki < " . $distro['wiki'] .  " >");
+    }
+
+    $page->writeStringList($distro['arch'], "arch < ", " >");
+
+    if (!empty($distro['latest_version'])) {
+        $page->writeLine("latest version < " . $distro['latest_version'] .  " >");
+    }
+
+    if (!empty($distro['based_on'])) {
+        $page->writeLine("based on < " . $distro['based_on'] .  " >");
+    }
+
+    $page->writeStringList($distro['release_model'], "release < ", " >");
+
+    if (!empty($distro['installation'])) {
+        $page->writeStringList($distro['installation'], "installation < ", " >");
+    }
+
+    if (!empty($distro['default_userspace'])) {
+        $page->writeLine("default desktop < " . $distro['default_userspace'] .  " >");
+    }
+
     if (!empty($distro['flavours'])) {
-        $page->writeStringList($distro['flavours']);
+        $page->writeStringList($distro['flavours'], "flavours < ", " >");
+    }
+
+    if (!empty($distro['package_manager'])) {
+        $page->writeStringList($distro['package_manager'], "package manager < ", " >");
+    }
+
+    if (!empty($distro['init'])) {
+        $page->writeStringList($distro['init'], "init < ", " >");
+    }
+
+    if (!empty($distro['libc'])) {
+        $page->writeStringList($distro['libc'], "libc < ", " >");
+    }
+
+    if (!empty($distro['bugtracker'])) {
+        $page->writeLine("bugtracker < " . $distro['bugtracker'] .  " >");
+    }
+
+    if (!empty($distro['git'])) {
+        $page->writeLine("git < " . $distro['git'] .  " >");
+    }
+
+    if (!empty($distro['mailing_lists'])) {
+        $page->writeLine("mailing_lists < " . $distro['mailing_lists'] .  " >");
+    }
+
+    if (!empty($distro['forum'])) {
+        $page->writeLine("forum < " . $distro['forum'] .  " >");
+    }
+
+    if (!empty($distro['packages'])) {
+        $page->writeLine("packages < " . $distro['packages'] .  " >");
+    }
+
+    if (!empty($distro['blog'])) {
+        $page->writeLine("blog < " . $distro['blog'] .  " >");
     }
 
     if (!empty($distro['iso'])) {
@@ -94,8 +163,8 @@ class Markdown
 {
     private $_page;
 
-    public function __construct(string $title, string $description) {
-        $this->_page .= "---\ntitle: $title \ndescription: $description\ntype: \"data\"\n---\n\n";
+    public function __construct(string $title, string $summary) {
+        $this->_page .= "---\ntitle: $title \ndescription: $summary\ntype: \"data\"\n---\n\n";
     }
 
     public function writeLine(string $line) {
@@ -146,12 +215,13 @@ class Markdown
         $this->_page .= "]\n\n";
     }
 
-    public function writeStringList(array $list) {
+    public function writeStringList(array $list, string $start = "", string $end = "") {
         $line = "";
         foreach ($list as $element) {
             $line .= ", $element";
         }
-        $this->writeLine(substr($line, 1));
+        $line = "$start" . substr($line, 1) . "$end";
+        $this->writeLine($line);
     }
 }
 
