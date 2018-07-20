@@ -180,7 +180,7 @@ class Markdown
     }
 
     public function writeVersionTable(string $arch, array $matrix, $flavours) {
-        $this->_page .= "|$arch|";
+        $this->_page .= "$arch|";
         $i = 0;
         foreach ($matrix as $version => $data) {
             $this->_page .= "$version|";
@@ -202,6 +202,8 @@ class Markdown
             }
             $this->_page .= "\n";
         }
+
+        $this->_page .= "\n";
     }
 
     public function writeLinksList(string $name, array $list) {
