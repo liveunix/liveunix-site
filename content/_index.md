@@ -23,6 +23,6 @@ liveunix will be divided in four part:
 - rest api to use data
 - live multiboot usb (forked from [glim](github.com(thias/glim))) (wip)
 
-this site is inspired by livecdlist.com.
+this site is inspired by [livecdlist.com](https://livecdlist.com).
 
 special thanks to neofetch for the ascii art.
