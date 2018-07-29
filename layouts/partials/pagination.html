@@ -1,11 +1,11 @@
 <nav>
   <p>
     {{if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}">h</a> |
+      <a href="{{ .Paginator.Prev.URL }}">< h</a>
     {{ end }}
     <span> [{{ .Paginator.PageNumber }} / {{ .Paginator.TotalPages }}]</span>
     {{ if .Paginator.HasNext }}
-      | <a href="{{ .Paginator.Next.URL }}">l</a>
+      <a href="{{ .Paginator.Next.URL }}">l ></a>
     {{ end }}
   </p>
 </nav>
