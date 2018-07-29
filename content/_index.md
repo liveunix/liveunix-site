@@ -21,7 +21,7 @@ liveunix will be divided in four part:
 - distributions and bsd data
 - minimal static site
 - rest api systems
-- LUMI (LiveUnix Multiboot ISO)
+- lumi (liveunix multiboot iso)
 
 this site is inspired by [livecdlist.com](https://livecdlist.com) and [glim](github.com(thias/glim).
 
