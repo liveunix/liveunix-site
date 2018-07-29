@@ -10,7 +10,7 @@
   {{ if .Description }}
     <blockquote itemprop="headline">{{ .Description }}</blockquote>
   {{ end }}
-  {{ if ne .Type "data" }}
+  {{ if ne .Type "distro" }}
     <div itemprop="description">
       {{ .Summary }}
     </div>
