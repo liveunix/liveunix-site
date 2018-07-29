@@ -1,6 +1,6 @@
 # liveunix
 
-we store and collect data about linux distributions and bsd systems.
+we store and collect data about linux distributions and bsd operating systems.
 data consists in all useful information about the systems along with the latest
 version and the up-to-date download links to iso and stage3.
 
@@ -18,11 +18,11 @@ iso donwload links.
 
 liveunix will be divided in four part:
 
-- distributions and bsd systems data
+- distributions and bsd data
 - minimal static site
-- rest api to use data
-- live multiboot usb (forked from [glim](github.com(thias/glim))) (wip)
+- rest api systems
+- LUMI (LiveUnix Multiboot ISO)
 
-this site is inspired by [livecdlist.com](https://livecdlist.com).
+this site is inspired by [livecdlist.com](https://livecdlist.com) and [glim](github.com(thias/glim).
 
 special thanks to neofetch for the ascii art.
