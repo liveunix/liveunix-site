@@ -7,10 +7,10 @@
       <p class="muted">{{ partial "post/meta.html" . }}</p>
     {{ end }}
   </header>
-  {{ if .Description }}
-    <blockquote itemprop="headline">{{ .Description }}</blockquote>
-  {{ end }}
   {{ if ne .Type "distro" }}
+    {{ if .Description }}
+        <blockquote itemprop="headline"> > {{ .Description }}</blockquote>
+    {{ end }}
     <div itemprop="description">
       {{ .Summary }}
     </div>
@@ -21,7 +21,8 @@
     <meta itemprop="datePublished" content="{{ dateFormat "2006-01-02T15:04:05-07:00" (default .Date (.PublishDate)) }}">
     <meta itemprop="dateModified" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">
   {{ else }}
-      <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">cat</a></nav>
+  > {{ .Description }}
+      <!-- <nav class="readmore"><a itemprop="url" href="{{ .RelPermalink }}">cat</a></nav> -->
   {{ end }}
   {{ with .Params.images }}
     <meta itemprop="image" content="{{ index . 0 }}">
