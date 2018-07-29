@@ -22,6 +22,6 @@ liveunix will be divided in four part:
 - rest api systems
 - lumi (liveunix multiboot iso)
 
-this project is inspired by [livecdlist.com](https://livecdlist.com) and [glim](github.com(thias/glim).
+this project is inspired by [livecdlist.com](https://livecdlist.com) and [glim](github.com/thias/glim).
 
 special thanks to neofetch for the ascii art.
