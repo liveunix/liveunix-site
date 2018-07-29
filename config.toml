@@ -6,8 +6,7 @@ enableRobotsTXT = true
 paginate = 4
 
 [permalinks]
-blog  = "blog/:slug/"
-data  = "data/:slug/"
+distro  = "distro/:slug/"
 
 [params]
 author = "Danilo Spinella"
@@ -19,18 +18,10 @@ dateformfull = "Mon Jan 2 2006 15:04:05 MST"
     name = "home"
     weight = "10"
     url = "/"
-# [[menu.main]]
-#     name= "whoami"
-#     weight = 100
-    # url = "/about/"
-# [[menu.main]]
-#     name= "blog"
-#     weight = 100
-#     url = "/blog"
 [[menu.main]]
-    name = "list"
+    name = "distro"
     weight = 100
-    url = "/data/"
+    url = "/distro/"
 [[menu.main]]
     name = "grep"
     weight = 200

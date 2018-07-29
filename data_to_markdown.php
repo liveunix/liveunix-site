@@ -10,10 +10,10 @@ function delTree($dir) {
     return rmdir($dir);
 }
 
-if (is_dir('content/data')) {
-    delTree('content/data');
+if (is_dir('content/distro')) {
+    delTree('content/distro');
 }
-mkdir('content/data');
+mkdir('content/distro');
 
 if (is_dir('static/ascii')) {
     delTree('static/ascii');
@@ -152,7 +152,7 @@ foreach ($data as $key => $distro) {
         }
     }
 
-    $output_filename = "content/data/" . $key;
+    $output_filename = "content/distro/" . $key;
     $output_filename .= '.md';
     $page->writeToFile($output_filename);
 
@@ -164,7 +164,7 @@ class Markdown
     private $_page;
 
     public function __construct(string $title, string $summary) {
-        $this->_page .= "---\ntitle: $title \ndescription: $summary\ntype: \"data\"\n---\n\n";
+        $this->_page .= "---\ntitle: $title \ndescription: $summary\ntype: \"distro\"\n---\n\n";
     }
 
     public function writeLine(string $line) {
