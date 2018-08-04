@@ -130,10 +130,8 @@ foreach ($data as $key => $distro) {
                 $page->writeVersionTable($arch, $data, $distro['flavours']);
             }
         } else {
-            foreach ($distro['arch'] as $arch) {
-                if (!empty($distro['iso'][$arch])) {
-                    $page->writeLinksList("iso.$arch", $distro['iso'][$arch]);
-                }
+            foreach ($distro['iso'] as $arch => $data) {
+                $page->writeLinksList("iso.$arch", $data);
             }
         }
     }
@@ -144,10 +142,8 @@ foreach ($data as $key => $distro) {
                 $page->writeVersionTable($arch, $data, $distro['profiles']);
             }
         } else {
-            foreach ($distro['arch'] as $arch) {
-                if (!empty($distro['stage3'][$arch])) {
-                    $page->writeLinksList("stage3.$arch", $distro['stage3'][$arch]);
-                }
+            foreach ($distro['stage3'] as $arch => $data) {
+                $page->writeLinksList("stage3.$arch", $data);
             }
         }
     }
@@ -182,7 +178,7 @@ class Markdown
     public function writeVersionTable(string $arch, array $matrix, $flavours) {
         $this->_page .= "$arch|";
         $i = 0;
-        foreach ($matrix as $version => $data) {
+        foreach ($matrix['version'] as $version => $data) {
             $this->_page .= "$version|";
             $i++;
         }
@@ -193,9 +189,9 @@ class Markdown
         $this->_page .= "\n";
         foreach ($flavours as $flavour) {
             $this->_page .= "|$flavour|";
-            foreach ($matrix as $version => $data) {
+            foreach ($matrix['version'] as $version => $data) {
                 if (!empty($data[$flavour])) {
-                    $this->_page .= "[wget](" . $data[$flavour] . ")|";
+                    $this->_page .= "[wget](" . $data[$flavour]['url'] . ")|";
                 } else {
                     $this->_page .= "|";
                 }
@@ -209,8 +205,8 @@ class Markdown
     public function writeLinksList(string $name, array $list) {
         $this->_page .= "$name = [\n";
         $t = "";
-        foreach ($list as $key => $value) {
-            $t .= ",[$key]($value)\n";
+        foreach ($list['version'] as $key => $value) {
+            $t .= ",[$key](" . $value['url'] . ")\n";
         }
         $this->_page .= substr($t, 1);
 
