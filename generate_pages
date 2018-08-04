@@ -1,0 +1,165 @@
+#!/usr/bin/python3
+
+import os
+import shutil
+import yaml
+import datetime
+from pathlib import Path
+
+data_folder = Path('unixdata')
+
+output_folder = Path('content/distro')
+
+ascii_folder = Path('static/ascii')
+
+ft = '<b>{0} <</b> {1} <b>></b>\n\n'
+
+header_fields = {
+    'title': 'name',
+    'description': 'summary',
+    'type': 'distro'
+}
+
+fields = {
+    'homepage': 'homepage',
+    'summary': 'summary',
+    'description': 'description',
+    'download': 'download',
+    'difficulty': 'degree of difficulty',
+    'docs': 'documentation',
+    'wiki': 'wiki',
+    'arch': 'architectures',
+    'latest_version': 'latest version',
+    'based_on': 'based on',
+    'release_model': 'release',
+    'installation': 'installation',
+    'default_userspace': 'desktop',
+    'flavours': 'flavours',
+    'package_manager': 'package manager',
+    'init': 'init system',
+    'libc': 'libc',
+    'bugtracker': 'bugtracker',
+    'git': 'git',
+    'mailing_lists': 'mailing lists',
+    'forum': 'forum',
+    'packages': 'packages list',
+    'blog': 'blog',
+    'developers': 'developers'
+}
+
+def get_distro():
+    distro =  []
+    # For each folder
+    for fd in data_folder.glob('[!.]*/'):
+        if not fd.is_dir():
+            continue
+
+        # Get the name of the folder by splitting the complete name
+        # eg. 'unixdata/arch', and taking the last part
+        name = (str(fd)).split('/')[1]
+
+        t = yaml.load(Path(str(fd) + '/description.yaml').read_text().lower())
+
+        for target in [ 'iso', 'stage3' ]:
+            # Create an empty dictionary
+            t[target] = {}
+            for arch in t['arch']:
+                if isinstance(arch, str):
+                    iso_data_file = Path(str(fd) + '/' + target + '-' + arch + '.yaml')
+                    if not iso_data_file.exists():
+                        continue
+
+                    t[target][arch] = yaml.load(iso_data_file.read_text().lower())
+                    continue
+
+                for profile in arch:
+                    iso_data_file = Path(str(fd) + '/' + target + '-' + profile + '.yaml')
+                    if not iso_data_file.exists():
+                        continue
+
+                    t[target][profile] = yaml.load(iso_data_file.read_text().lower())
+
+        t['arch'] = get_arch(t)
+
+        t['id']  = name
+        distro.append(t.copy())
+
+    return distro
+
+def copy_ascii_files():
+    os.mkdir(ascii_folder)
+    for fd in data_folder.glob('*/ascii'):
+        name = str(fd).split('/')[1]
+        shutil.copy(fd, str(ascii_folder) + '/' + name)
+
+def write_markdown(distro):
+    with open(str(output_folder) + '/' + distro['id'] + '.md', 'a') as md:
+        for f in fields:
+            if not f in distro:
+                continue
+
+            if isinstance(distro[f], str) or isinstance(distro[f], int) or isinstance(distro[f], float):
+                md.write(ft.format(fields[f], distro[f]))
+                continue
+
+            if isinstance(distro[f], datetime.date):
+                md.write(ft.format(fields[f], str(distro[f])))
+                continue
+
+            if isinstance(distro[f], list) and isinstance(distro[f][0], str):
+                md.write(ft.format(fields[f], ", ".join(distro[f])))
+                continue
+
+            if isinstance(distro[f], list) and isinstance(distro[f][0], dict):
+                s = []
+                for dev in distro[f]:
+                    s.append("[{0}]({1})".format(dev['name'], dev['url']))
+
+                md.write(ft.format(fields[f], ", ".join(s)))
+
+def get_arch(distro):
+    t = []
+    for arch in distro['arch']:
+        if isinstance(arch, str):
+            t.append(arch)
+            continue
+
+        t.append([ i for i in arch ][0])
+
+    return t
+
+def write_header(distro):
+    with open(str(output_folder) + '/' + distro['id'] + '.md', 'w') as md:
+        md.write('---\n')
+        for f in header_fields:
+            if not header_fields[f] in distro:
+                md.write(f + ": " + header_fields[f] + '\n')
+                continue
+
+            md.write(f + ": " + distro[header_fields[f]] + '\n')
+
+        md.write('---\n')
+
+def insert_js_code(distro):
+    with open(str(output_folder) + '/' + distro['id'] + '.md', 'a') as md:
+        md.write('<div class=\"ascii-art\">\n<script>\n document.write(loadFile(\"/ascii/{0}\"));\n</script>\n</div>\n\n'.format(distro['id']))
+
+def main():
+    if output_folder.exists():
+        shutil.rmtree(output_folder)
+
+    if ascii_folder.exists():
+        shutil.rmtree(ascii_folder)
+
+    distro = get_distro()
+
+    copy_ascii_files()
+
+    os.mkdir(output_folder)
+    for d in distro:
+        write_header(d)
+        insert_js_code(d)
+        write_markdown(d)
+
+if __name__ == '__main__':
+    main()
