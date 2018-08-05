@@ -29,7 +29,7 @@ dateformfull = "Mon Jan 2 2006 15:04:05 MST"
 [[menu.main]]
     name= "git"
     weight = 300
-    url = "https://github.com/liveunix/liveunix-data"
+    url = "https://github.com/liveunix/"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
