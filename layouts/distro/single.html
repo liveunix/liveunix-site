@@ -11,7 +11,11 @@
       if (xmlhttp.status==200) {
         result = xmlhttp.responseText;
       }
-      return result;
+      if (result != null) {
+        return result;
+      }
+
+      return "";
     }
   </script>
   <article itemscope itemtype="http://schema.org/Product">
