@@ -4,6 +4,7 @@ title = "liveunix"
 theme = "after-dark"
 enableRobotsTXT = true
 paginate = 4
+paginatepath = ""
 
 [permalinks]
 distro  = "distro/:slug/"
